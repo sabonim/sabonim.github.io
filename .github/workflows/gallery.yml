@@ -1,0 +1,49 @@
+# Раз в сутки (и по кнопке Run workflow) забирает список фото с Flickr
+# и публикует галерею на GitHub Pages. Сами фото остаются на Flickr.
+name: Gallery
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch photos from Flickr
+        env:
+          FLICKR_USER: ${{ vars.FLICKR_USER || '24179074@N04' }}
+          FLICKR_ALBUM_ID: ${{ vars.FLICKR_ALBUM_ID }}
+          FLICKR_API_KEY: ${{ secrets.FLICKR_API_KEY }}
+        run: node scripts/fetch-flickr.mjs
+
+      - name: Collect site files
+        run: |
+          mkdir _site
+          cp -r index.html style.css gallery.js photos.json chocolate _site/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+      - id: deployment
+        uses: actions/deploy-pages@v4

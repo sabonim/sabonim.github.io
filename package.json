@@ -1,0 +1,14 @@
+{
+  "name": "flickr-gallery",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:chocolate": "node tools/build-chocolate.mjs",
+    "fetch": "node scripts/fetch-flickr.mjs",
+    "serve": "npx --yes http-server -p 8080 -c-1 ."
+  },
+  "devDependencies": {
+    "coffeescript": "^2.7.0",
+    "less": "^4.2.0"
+  }
+}
