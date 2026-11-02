@@ -43,7 +43,33 @@ a { color: inherit; }
   gap: 16px;
 }
 
-.tile { margin: 0; }
+.tile { position: relative; margin: 0; }
+
+/* Ссылка на фото на Flickr: полупрозрачный значок в углу плитки, поверх подсветки chocolate.js */
+.tile-flickr {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font: 600 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.tile-flickr:hover,
+.tile-flickr:focus-visible {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.6);
+}
 
 .tile-image {
   position: relative;
@@ -78,9 +104,6 @@ a { color: inherit; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.tile figcaption a { text-decoration: none; }
-.tile figcaption a:hover { text-decoration: underline; }
 
 .page-footer {
   padding-top: 40px;

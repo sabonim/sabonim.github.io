@@ -38,16 +38,24 @@
     link.appendChild(img);
 
     // Правила Flickr: показанное фото должно ссылаться на свою страницу на Flickr
-    var caption = document.createElement('figcaption');
     var flickrLink = document.createElement('a');
     flickrLink.href = photo.page;
-    flickrLink.textContent = photo.title || 'Открыть на Flickr';
+    flickrLink.className = 'tile-flickr';
+    flickrLink.textContent = 'fl';
+    flickrLink.title = 'Открыть на Flickr';
+    flickrLink.setAttribute('aria-label', 'Открыть на Flickr');
     flickrLink.target = '_blank';
     flickrLink.rel = 'noopener';
-    caption.appendChild(flickrLink);
 
     figure.appendChild(link);
-    figure.appendChild(caption);
+    figure.appendChild(flickrLink);
+
+    if (photo.title) {
+      var caption = document.createElement('figcaption');
+      caption.textContent = photo.title;
+      figure.appendChild(caption);
+    }
+
     grid.appendChild(figure);
     return img;
   });
